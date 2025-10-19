@@ -1,0 +1,95 @@
+# ARQUIVO: docker-compose.yml
+
+version: '3.8'
+
+services:
+  # Serviço do Backend (NestJS)
+  backend:
+    build:
+      context: ./backend
+    container_name: meu_projeto_backend
+    command: npm run start:dev
+    volumes:
+      - ./backend:/app
+      - /app/node_modules # Evita que o node_modules local sobrescreva o do container
+    ports:
+      - "${BACKEND_PORT}:3000"
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME}?schema=public
+    networks:
+      - meu-projeto-net
+    restart: unless-stopped
+
+  # Serviço do Frontend (React + Vite)
+  frontend:
+    build:
+      context: ./frontend
+    container_name: meu_projeto_frontend
+    command: npm run dev -- --host # O --host é crucial para expor o servidor do Vite
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules # Mesma lógica do backend
+    ports:
+      - "${FRONTEND_PORT}:5173"
+    environment:
+      - CHOKIDAR_USEPOLLING=true # Garante que o Hot Reload funcione em alguns sistemas
+    networks:
+      - meu-projeto-net
+    restart: unless-stopped
+
+  # Serviço do Nginx (Reverse Proxy)
+  nginx:
+    build:
+      context: ./nginx
+    container_name: meu_projeto_nginx
+    ports:
+      - "${NGINX_PORT}:80"
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - meu-projeto-net
+    restart: unless-stopped
+
+  # Serviço do Banco de Dados PostgreSQL
+  postgres:
+    image: postgres:15-alpine # Usando uma versão específica e alpine
+    container_name: meu_projeto_postgres
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT}:5432"
+    networks:
+      - meu-projeto-net
+    restart: unless-stopped
+
+  # Serviço do PGAdmin
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: meu_projeto_pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+    ports:
+      - "${PGADMIN_PORT}:80"
+    depends_on:
+      - postgres
+    networks:
+      - meu-projeto-net
+    restart: unless-stopped
+
+# Volumes para persistência de dados
+volumes:
+  postgres-data:
+    driver: local
+
+# Rede para comunicação entre os containers
+networks:
+  meu-projeto-net:
+    driver: bridge

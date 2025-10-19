@@ -1,0 +1,22 @@
+# ARQUIVO: backend/Dockerfile
+
+# Estágio 1: Imagem base
+FROM node:lts-alpine
+
+# Define o diretório de trabalho
+WORKDIR /app
+
+# Copia os arquivos de dependência
+COPY package*.json ./
+
+# Instala as dependências
+RUN npm install
+
+# Copia o restante do código da aplicação
+COPY . .
+
+# Expõe a porta padrão do NestJS
+EXPOSE 3000
+
+# O comando para iniciar a aplicação será definido no docker-compose.yml
+CMD ["npm", "run", "start:dev"]
