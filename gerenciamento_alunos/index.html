@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Alunos</title>
+</head>
+<body>
+    <h2>Cadastro de Aluno</h2>
+    <form id="formAluno">
+        <label>Nome: <input type="text" id="nome"></label><br><br>
+        <label>Idade: <input type="number" id="idade"></label><br><br>
+        <label>Curso: 
+            <select id="curso">
+                <option>JavaScript</option>
+                <option>Python</option>
+                <option>Java</option>
+            </select>
+            </label><br><br>
+        <label>Nota Final: <input type="number" id="nota"></label><br><br>
+        <button type="button" id="btnCadastrar">Cadastrar</button>
+    </form>
+
+    <table border="1" id="tabelaAlunos">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Idade</th>
+                <th>Curso</th>
+                <th>Nota Final</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <h3>Relatório</h3>
+    <button id="btnAprovados">Listar Aprovados</button>
+    <button id="btnMediaNotas">Média das Notas</button>
+    <button id="btnMediaIdades">Média das Idades</button>
+    <button id="btnOrdemAlfabetica">Ordem Alfabética</button>
+    <button id="btnQtdCursos">Quantidade por Curso</button>
+
+    <pre id="relatorio"></pre>
+
+    <script src="script.js"></script>
+</body>
+</html>

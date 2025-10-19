@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  alunos-app:
+    build:
+      context: .
+    image: alunos-app-image
+    ports:
+      - "8080:80"

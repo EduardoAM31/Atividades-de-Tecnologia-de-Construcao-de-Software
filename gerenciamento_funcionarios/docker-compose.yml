@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  funcionarios-app:
+    build:
+      context: .
+    image: funcionarios-app-image
+    ports:
+      - "8081:80"
