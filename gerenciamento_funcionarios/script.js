@@ -105,7 +105,7 @@ document.getElementById("btnMediaSalarial").addEventListener("click", () => {
 });
 
 document.getElementById("btnCargosUnicos").addEventListener("click", () => {
-  const cargos = new Set(funcionarios.map(f => f.cargo));
+  const cargos = [...new Set(funcionarios.map(f => f.cargo))];
   relatorio.textContent = cargos.length ? cargos.join("\n") : "Sem cargos cadastrados.";
 });
 
