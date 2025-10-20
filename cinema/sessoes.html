@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Listagem de Sessões</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <script src="js/menu.js"></script>
+  <div class="container">
+    <h2>Sessões Disponíveis</h2>
+    <table class="table table-striped mt-3" id="tabela">
+      <thead class="table-dark">
+        <tr>
+          <th>Filme</th><th>Sala</th><th>Data/Hora</th><th>Preço</th><th>Ação</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    const sessoes = JSON.parse(localStorage.getItem("sessoes")) || [];
+    const tbody = document.querySelector("#tabela tbody");
+
+    sessoes.forEach((s, i) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${s.filme}</td>
+        <td>${s.sala}</td>
+        <td>${s.datahora}</td>
+        <td>R$ ${parseFloat(s.preco).toFixed(2)}</td>
+        <td><button class="btn btn-success btn-sm" onclick="comprar(${i})">Comprar</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    function comprar(i) {
+      localStorage.setItem("sessaoSelecionada", JSON.stringify(sessoes[i]));
+      window.location.href = "venda-ingressos.html";
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
