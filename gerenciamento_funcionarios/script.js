@@ -27,6 +27,7 @@ class Funcionario {
 let funcionarios = [];
 let indiceEdicao = null;
 
+const btnCadastrar = document.getElementById("btnCadastrar");
 const form = document.getElementById("formFuncionario");
 const tbody = document.querySelector("#tabelaFuncionarios tbody");
 const relatorio = document.getElementById("relatorio");
@@ -49,7 +50,7 @@ const renderTabela = () => {
     });
 };
 
-document.getElementById("btnCadastrar").addEventListener("click", () => {
+btnCadastrar.addEventListener("click", () => {
     const nome = document.getElementById("nome").value;
     const idade = document.getElementById("idade").value;
     const cargo = document.getElementById("cargo").value;
